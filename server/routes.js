@@ -8,32 +8,43 @@
     var router = require('express').Router();
 
     // Configuration...
-    router.post('/list', getList);
+    router.get('/list', getList);
 
     // Functions...
     function getList(req, res) {
-        var url = req.body.url;
-        console.log(url);
+        var username = new Buffer('wow_lon').toString('base64');
+        var password = new Buffer('hoy1hoy2').toString('base64');
+        var options = {
+            url: 'https://www.tipidpc.com/forumbookmarks.php',
+            path: '/actions/loginAction.php',
+            method: 'GET',
+            port: 443,
+            auth: {
+                user: username,
+                pass: password
+            }
+        }
 
-        request(url, function (error, response, html) {
+        request(options, function (error, response, html) {
             if (!error) {
                 var $ = cheerio.load(html);
-                var name, price;
+                var title, topic, listItem;
                 var json = { items: [] };
-                
-                $('#idx_ifs_new li').each(function(i, element) {
-                    name = $(element).children('h4').children('a').text();
-                    price = $(element).children('strong').text();
-                    json.items.push({ name, price });
+
+                console.log($('#main').text());
+                $('.forumtopics li').each(function (i, element) {
+                    title = $(element).children('h4').children('a').text();
+                    topic = $(element).children('p').children('a').text();
+                    json.items.push({ title, topic });
                 });
-                
+
                 res.status(200).send(json);
             }
             else {
-                req.connection.destroy();     
+                req.connection.destroy();
             }
         });
     }
-    
+
     module.exports = router;
 })();
