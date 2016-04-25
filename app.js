@@ -1,10 +1,14 @@
 (function () {
+	'user strict';
+	
 	var express = require('express');
+	var app = express();
 	var fs = require('fs');
 	var request = require('request');
 	var cheerio = require('cheerio');
-	var app = express();
+	
 
+	app.set('view engine', 'ejs');
 	app.get('/webscraper', function (req, res) {
 		var url = 'https://tipidpc.com/viewitem.php?iid=39425823';
 		// var options = {
@@ -18,6 +22,9 @@
 		// }
 		// }
 
+		res.render('index');
+
+		/*
 		request(url, function (error, response, html) {
 			if (!error) {
 				var $ = cheerio.load(html);
@@ -40,9 +47,10 @@
 					console.log('File successfully written! - Check your project directory for the output.json file');
 				})
 
-				res.send('Check your console!');
+				// res.send('Check your console!');
 			}
 		});
+ 		*/
 	})
 
 	app.listen('8081')
