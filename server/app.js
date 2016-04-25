@@ -15,5 +15,5 @@
 
     // Startup...
     app.listen(port);
-    console.log('Express server listening on port ' + port);
+    console.log('Listening on port ' + port);
 })();
